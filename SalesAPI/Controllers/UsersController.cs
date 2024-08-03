@@ -5,9 +5,7 @@ using SalesAPI.Models;
 
 namespace SalesAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController(DataContext _context) : ControllerBase
+    public class UsersController(DataContext _context) : BaseApiController
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
@@ -20,7 +18,8 @@ namespace SalesAPI.Controllers
         {
             var user = await _context.Users.FindAsync(id);
 
-            if(user == null) return NotFound();
+            if(user == null) 
+                return NotFound();
             
             return user;
         }
