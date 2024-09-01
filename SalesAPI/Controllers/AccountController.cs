@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalesAPI.Data;
 using SalesAPI.DTOs;
+using SalesAPI.Interfaces;
 using SalesAPI.Models;
 namespace SalesAPI.Controllers
 {
-    public class AccountController(DataContext context) : BaseApiController
+    public class AccountController(DataContext context,ITokenRepository tokenRepository) : BaseApiController
     {
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if(await UserExist(registerDto.UserName)) return BadRequest("Username is taken");
 
@@ -29,7 +30,11 @@ namespace SalesAPI.Controllers
 
             await context.SaveChangesAsync();
 
-            return user;
+            return new UserDto
+            {
+                UserName = user.UserName,
+                Token =  tokenRepository.CreateToken(user)
+            };
         }
 
         public async Task<bool> UserExist(string username)
@@ -38,7 +43,7 @@ namespace SalesAPI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await context.Users.FirstOrDefaultAsync(x=>x.UserName==loginDto.UserName.ToLower());
 
@@ -53,7 +58,11 @@ namespace SalesAPI.Controllers
                 if(computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password"); 
             }
 
-            return user;
+           return new UserDto
+            {
+                UserName = user.UserName,
+                Token =  tokenRepository.CreateToken(user)
+            };
         }
     }
 }
