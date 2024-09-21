@@ -6,7 +6,6 @@ using SalesAPI.Models;
 
 namespace SalesAPI.Controllers
 {
-    [Authorize]
     public class UsersController(DataContext _context) : BaseApiController
     {
         [AllowAnonymous]
@@ -17,7 +16,6 @@ namespace SalesAPI.Controllers
             return users;
         }
 
-        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
