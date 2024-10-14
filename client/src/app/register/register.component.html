@@ -1,30 +1,65 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" aytocomplete="off">
-    <h2 class="text-center text-primary">Εγγραφή Χρήστη</h2>
-    <hr>
-    <div class="mb-3 form-floating">
-        <input
-            type="text"
-            class="form-control"
-            name="username"
-            [(ngModel)]="model.username"
-            placeholder="Username"
-        >
-        <label>Ονομα Χρήστη</label>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM User Registration</title>
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="sidenav">
+        <div class="register-main-text">
+            <h2>Register New CRM User</h2>
+            <p>Add new Admins, Salespersons, or other users to the system.</p>
+        </div>
     </div>
-    
-    <div class="mb-3 form-floating">
-        <input
-            type="password"
-            class="form-control"
-            name="password"
-            [(ngModel)]="model.password"
-            placeholder="Password"
-        >
-        <label>Κωδικός</label>
+    <div class="main">
+        <div class="register-form-container">
+            <div class="register-form">
+                <form #loginForm="ngForm">
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i> First Name</label>
+                        <input id="name" type="text" class="form-control" placeholder="Enter first name" name="username" [(ngModel)]="model.username">
+                    </div>
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i> Last Name</label>
+                        <input id="name" type="text" class="form-control" placeholder="Enter last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="name"><i class="fas fa-user"></i> Full Name</label>
+                        <input id="name" type="text" class="form-control" placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                        <input id="email" type="email" class="form-control" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> Password</label>
+                        <input id="password" type="password" class="form-control" placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label for="role"><i class="fas fa-users-cog"></i> Select Role</label>
+                        <select id="role" class="form-control">
+                            <option value="admin">Admin</option>
+                            <option value="sales">Salesperson</option>
+                            <option value="support">Support</option>
+                            <option value="manager">Manager</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+                        <input id="phone" type="text" class="form-control" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="department"><i class="fas fa-briefcase"></i> Department</label>
+                        <input id="department" type="text" class="form-control" placeholder="Enter department">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register User <i class="fas fa-user-plus"></i></button>
+                    <button type="button" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group text-center">
-        <button class="btn btn-success me-2" type="submit">Eγγραφή</button>
-        <button class="btn btn-default me-2" type="button">Ακύρωση</button>
-
-    </div>
-</form>
+</body>
+</html>

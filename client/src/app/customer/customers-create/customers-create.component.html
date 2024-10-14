@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List - CRM</title>
+</head>
+<body>
+    <div class="sidenav">
+        <div class="customer-main-text">
+            <h2>Customer List</h2>
+            <p>Filter, select, and view customers in a paginated table.</p>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="filter-container">
+            <form id="filter-form">
+                <div class="form-group">
+                    <input type="text" id="search-customer" class="form-control" placeholder="Search by Name or Company">
+                </div>
+                <div class="form-group">
+                    <select id="filter-status" class="form-control">
+                        <option value="">All Status</option>
+                        <option value="new">New</option>
+                        <option value="contacted">Contacted</option>
+                        <option value="qualified">Qualified</option>
+                        <option value="lost">Lost</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="filter-industry" class="form-control">
+                        <option value="">All Industries</option>
+                        <option value="technology">Technology</option>
+                        <option value="finance">Finance</option>
+                        <option value="healthcare">Healthcare</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <table class="customer-table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="customer-list"></tbody>
+        </table>
+
+        <div class="pagination-controls">
+            <button id="prev-page" class="btn btn-secondary">Previous</button>
+            <span id="current-page"></span>
+            <button id="next-page" class="btn btn-primary">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const customers = [
+            { id: 1, name: "John Doe", company: "Tech Solutions Inc.", phone: "(123) 456-7890", email: "john.doe@example.com", status: "new", industry: "technology" },
+            { id: 2, name: "Jane Smith", company: "FinTech Co.", phone: "(321) 654-0987", email: "jane.smith@fintech.com", status: "contacted", industry: "finance" },
+            { id: 3, name: "Alan Johnson", company: "HealthTech Ltd.", phone: "(987) 654-3210", email: "alan.johnson@healthtech.com", status: "qualified", industry: "healthcare" },
+            { id: 4, name: "Emily Davis", company: "EduTech", phone: "(555) 123-4567", email: "emily.davis@edutech.com", status: "new", industry: "technology" },
+            { id: 5, name: "Michael Brown", company: "Green Finance", phone: "(555) 987-6543", email: "michael.brown@greenfinance.com", status: "contacted", industry: "finance" },
+            { id: 6, name: "Sarah Wilson", company: "Healthcare Innovations", phone: "(555) 654-3210", email: "sarah.wilson@healthcareinnovations.com", status: "qualified", industry: "healthcare" },
+            // Add more customers as needed for testing
+        ];
+
+        const itemsPerPage = 3;
+        let currentPage = 1;
+
+        function renderCustomers(customersToRender) {
+            const customerList = document.getElementById('customer-list');
+            customerList.innerHTML = '';
+
+            customersToRender.forEach(customer => {
+                const customerRow = `
+                    <tr>
+                        <td><input type="checkbox" class="select-customer" value="${customer.id}"></td>
+                        <td>${customer.name}</td>
+                        <td>${customer.company}</td>
+                        <td>${customer.phone}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.status.charAt(0).toUpperCase() + customer.status.slice(1)}</td>
+                    </tr>
+                `;
+                customerList.insertAdjacentHTML('beforeend', customerRow);
+            });
+        }
+
+        function updatePagination() {
+            document.getElementById('current-page').textContent = `Page ${currentPage}`;
+        }
+
+        function paginateCustomers(customersToPaginate) {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedCustomers = customersToPaginate.slice(start, end);
+            renderCustomers(paginatedCustomers);
+            updatePagination();
+        }
+
+        document.getElementById('next-page').addEventListener('click', () => {
+            const totalPages = Math.ceil(customers.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                paginateCustomers(customers);
+            }
+        });
+
+        document.getElementById('prev-page').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                paginateCustomers(customers);
+            }
+        });
+
+        document.getElementById('filter-form').addEventListener('input', function () {
+            const searchValue = document.getElementById('search-customer').value.toLowerCase();
+            const statusFilter = document.getElementById('filter-status').value;
+            const industryFilter = document.getElementById('filter-industry').value;
+
+            const filteredCustomers = customers.filter(customer => {
+                const nameMatch = customer.name.toLowerCase().includes(searchValue) || customer.company.toLowerCase().includes(searchValue);
+                const statusMatch = statusFilter === "" || customer.status === statusFilter;
+                const industryMatch = industryFilter === "" || customer.industry === industryFilter;
+
+                return nameMatch && statusMatch && industryMatch;
+            });
+
+            currentPage = 1; // Reset to first page after filtering
+            paginateCustomers(filteredCustomers);
+        });
+
+        // Initial rendering
+        paginateCustomers(customers);
+    </script>
+</body>
+</html>

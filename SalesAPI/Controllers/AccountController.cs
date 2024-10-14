@@ -17,10 +17,9 @@ namespace SalesAPI.Controllers
 
             using var hmac = new HMACSHA512();
 
-            var id = context.Users.Max(x=>x.Id) + 1;
             var user = new AppUser
             {
-                Id = id,
+                Id = Guid.NewGuid(),
                 UserName = registerDto.UserName.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key

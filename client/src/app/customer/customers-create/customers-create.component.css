@@ -1,0 +1,138 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidenav {
+    width: 35%;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    color: white;
+    backdrop-filter: blur(10px);
+}
+
+.sidenav h2 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.sidenav p {
+    font-size: 18px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    justify-content: center;
+    padding: 40px;
+}
+
+/* Filter Container */
+.filter-container {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Table Styles */
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.customer-table th, .customer-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.customer-table th {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.customer-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Pagination Controls */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.btn-secondary {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #e53935;
+}
+
+@media (max-width: 768px) {
+    .sidenav {
+        width: 100%;
+        height: auto;
+    }
+
+    .main {
+        width: 100%;
+        padding: 20px;
+    }
+}
