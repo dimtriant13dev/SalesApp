@@ -7,7 +7,6 @@ namespace SalesAPI.Data
     {
         public DbSet<AppUser> Users { get; set; }
         public DbSet<AppointMent> AppointMents {get;set;}
-
         public DbSet<Customer> Customers {get;set;}
     }
 }

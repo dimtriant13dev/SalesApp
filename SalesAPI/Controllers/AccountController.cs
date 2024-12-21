@@ -22,7 +22,15 @@ namespace SalesAPI.Controllers
                 Id = Guid.NewGuid(),
                 UserName = registerDto.UserName.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                PasswordSalt = hmac.Key,
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                Department = registerDto.Department,
+                UserRoles = registerDto.UserRoles,
+                EmailAddress = registerDto.EmailAddress,
+                DateOfBirth = registerDto.DateOfBirth,
+                Created = registerDto.Created
+
             };
 
             context.Users.Add(user);
@@ -59,6 +67,7 @@ namespace SalesAPI.Controllers
 
            return new UserDto
             {
+                Id = user.Id,
                 UserName = user.UserName,
                 Token =  tokenRepository.CreateToken(user)
             };

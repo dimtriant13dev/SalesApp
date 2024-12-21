@@ -1,11 +1,9 @@
-using System.ComponentModel.DataAnnotations;
+using SalesAPI.Models;
 
-namespace SalesAPI.Models
+namespace SalesAPI.DTOs
 {
-    public class Customer
+    public class CustomerDto
     {
-        [Key]
-        public Guid Id {get;set;}
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Title { get; set; }
@@ -14,7 +12,6 @@ namespace SalesAPI.Models
         public string? Comments {get;set;}
         public DateTime CreatedAt {get;set;}
         public DateTime UpdatedAt {get;set;}
-        public virtual AppUser? AppUser {get;set;}
-        public virtual ICollection<AppointMent>? AppointMents { get; set; }
+        public AppUser? AppUser {get;set;}
     }
 }

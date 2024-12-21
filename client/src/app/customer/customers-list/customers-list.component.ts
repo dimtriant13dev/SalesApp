@@ -1,55 +1,128 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
-import { PageEvent } from '@angular/material/paginator';
-import { MaterialModule } from '../../material/material.module';
-interface Customer {
-  id: number;
-  name: string;
-  company: string;
-  phone: string;
-  email: string;
-  status: string;
-}
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { Customer } from '../../_models/customer';
+import { CustomerService } from '../../_services/customer.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
+import {MatDividerModule} from '@angular/material/divider';
+
 
 @Component({
-  selector: 'app-customer-list',
+  selector: 'app-customers-list',
+  standalone:true,
   templateUrl: './customers-list.component.html',
-  styleUrls: ['./customers-list.component.css'],
+  imports: [
+    FormsModule,
+    MatGridListModule,
+    MatDividerModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatCardModule,
+    MatSelectModule,
+    MatTableModule,
+    FlexLayoutModule,
+    MatPaginator,
+    MatButtonModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatCheckbox,
+  ],
+  styleUrls: ['./customers-list.component.css']
 })
-export class CustomersListComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'name', 'company', 'phone', 'email', 'status'];
-  dataSource = new MatTableDataSource<Customer>([]);
-  totalCustomers = 0;
-  pageSize = 5;
-  pageIndex = 0;
-  customerFilter: string = '';
-  statusFilter: string = '';
+export class CustomersListComponent{
+  
+  private customerService = inject(CustomerService);
+  private router  =inject(Router);
+  private toastr = inject(ToastrService);
+  customers: Customer[] = []; // Array to hold the customer data
+  loading: boolean = false;  // Optional loading indicator
+  errorMessage: string = ''; // Optional error handling
+  
+  appUserId = '';
 
-  customers: Customer[] = [
-    { id: 1, name: "John Doe", company: "Tech Solutions Inc.", phone: "(123) 456-7890", email: "john.doe@example.com", status: "new" },
-    { id: 2, name: "Jane Smith", company: "FinTech Co.", phone: "(321) 654-0987", email: "jane.smith@fintech.com", status: "contacted" },
-    { id: 3, name: "Alan Johnson", company: "HealthTech Ltd.", phone: "(987) 654-3210", email: "alan.johnson@healthtech.com", status: "qualified" },
-    { id: 4, name: "Emily Davis", company: "EduTech", phone: "(555) 123-4567", email: "emily.davis@edutech.com", status: "new" },
-    { id: 5, name: "Michael Brown", company: "Green Finance", phone: "(555) 987-6543", email: "michael.brown@greenfinance.com", status: "contacted" },
-    { id: 6, name: "Sarah Wilson", company: "Healthcare Innovations", phone: "(555) 654-3210", email: "sarah.wilson@healthcareinnovations.com", status: "qualified" },
-  ];
+  displayedColumns: string[] = ['select','FirstName', 'LastName', 'VatNumber', 'Phone'];
+
+  dataSource = new MatTableDataSource<Customer>([]);
+  selection = new SelectionModel<Customer>(true, []);
+  
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit() {
-    this.dataSource.data = this.customers;
-    this.totalCustomers = this.customers.length;
+    this.appUserId = localStorage.getItem('userId') as string ;
+    console.log(this.appUserId)
+    this.fetchCustomers(this.appUserId);
+    
+   
   }
 
-  applyFilters() {
-    this.dataSource.data = this.customers.filter(customer => {
-      return (
-        (this.customerFilter ? customer.name.toLowerCase().includes(this.customerFilter.toLowerCase()) || customer.company.toLowerCase().includes(this.customerFilter.toLowerCase()) : true) &&
-        (this.statusFilter ? customer.status === this.statusFilter : true)
-      );
-    });
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  
+  fetchCustomers(appUserId: string): void {
+    this.loading = true;
+    this.customerService.getCustomersByAppUserId(appUserId).subscribe({
+      next: (data) => {
+        this.customers= data;
+        this.loading = false;
+        this.dataSource = new MatTableDataSource<Customer>(this.customers)
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error: (error) => {
+        this.errorMessage = 'Failed to fetch customers';
+        console.error(error);
+        this.loading = false;
+      },
+    })
   }
 
-  onPaginateChange(event: PageEvent) {
-    this.pageSize = event.pageSize;
-    this.pageIndex = event.pageIndex;
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+
+    this.selection.select(...this.dataSource.data);
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: Customer): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  onCreateCustomer(){
+    this.router.navigateByUrl('/customer/create');
   }
 }

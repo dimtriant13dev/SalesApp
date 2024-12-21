@@ -11,16 +11,19 @@ namespace SalesAPI.Models
 
         public string? FirstName {get;set;}
        
+        public DateOnly DateOfBirth {get;set;}
         public string? LastName {get;set;}
 
         [EmailAddress]
         public string? EmailAddress {get;set;}
 
+        public DateTime Created {get;set;}=DateTime.UtcNow;
+
         public required string UserName { get; set; }
 
-        public required byte[] PasswordHash { get; set; }
+        public  byte[]? PasswordHash { get; set; }
 
-        public required byte[] PasswordSalt {get;set;}
+        public  byte[]? PasswordSalt {get;set;}
 
         public Department Department {get;set;}
 

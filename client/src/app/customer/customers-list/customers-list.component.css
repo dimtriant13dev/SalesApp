@@ -1,0 +1,213 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body
+{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Same gradient background */
+}
+
+.container {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+.empty-div{
+    width: 25%;
+}
+/* Sidebar */
+.sidebar {
+    height: 100%;
+    width: 25%;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent glassy effect */
+    padding: 50px;
+    margin-top: 10px;
+    color: white;
+    align-items: center;
+    justify-content: left;
+    backdrop-filter: blur(10px); /* Glass effect */
+}
+
+.main-content
+{
+    display: flex;
+}
+
+/* Buttons Section */
+.example-button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.delete-button {
+    background-color: #ff4d4d !important; /* Red for delete */
+    color: white !important;
+}
+
+.add-button {
+    background-color: #4caf50 !important; /* Green for add */
+    color: white !important;
+}
+.edit-button {
+    background-color: #245acf !important; /* Green for add */
+    color: white !important;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+    background: rgba(216, 234, 248, 0.884); /* Glassmorphism background */
+    padding: 60px;
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    overflow: auto;
+    font-size: larger;
+    max-height: 100vh;
+}
+
+/* Table Styles */
+table.mat-elevation-z8 {
+    width: 100%;
+    color: white;
+    background: transparent;
+}
+
+th.mat-header-cell {
+    color: #9fd0ffe5;
+    font-weight: bold;
+    text-align: left;
+}
+
+td.mat-cell {
+    color: #b0b0b0;
+    padding: 16px;
+}
+
+.mat-header-row, .mat-row {
+    border-bottom: 1px solid rgba(33, 93, 128, 0.87);
+}
+
+.mat-row-selected {
+    background-color: rgba(173, 216, 230, 0.3); /* Light blue for selection */
+}
+
+/* Paginator Styles */
+mat-paginator {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+mat-paginator button {
+    color: white;
+    background: transparent;
+    border-radius: 50%;
+    transition: background 0.3s ease;
+}
+
+mat-paginator button:hover {
+    background: rgb(255, 255, 255);
+}
+
+.mat-paginator-range-label {
+    color: white;
+}
+
+/* Checkbox Checked State */
+.mat-checkbox-indeterminate.mat-primary .mat-checkbox-background, .mat-checkbox-checked.mat-primary .mat-checkbox-background {
+    background-color: rgb(63, 153, 111);
+}
+
+/* General table text styling */
+mat-header-cell, 
+mat-cell {
+    font-size: 20px; /* Adjust this to your preferred size */
+    line-height: 1.5; /* Optional: better line height for readability */
+    color: #ffffff; /* Optional: color adjustment to match the table design */
+}
+
+/* Header specific font size */
+.mat-header-cell {
+    font-size: 30px; /* Slightly larger for header text */
+    font-weight: bold; /* Optional: emphasize header text */
+    color: #d1d1d1; /* Lighter color for headers */
+}
+
+/* Data cell specific font size */
+.mat-cell {
+    font-size: 20px;
+    color: #eaeaea; /* Slightly lighter than header for differentiation */
+}
+
+.sidebar {
+    height: 100%;
+    width: 25%;
+    background-color: rgba(255, 255, 255, 0.1); /* Transparent glassy effect */
+    padding: 50px;
+    color: white;
+    align-items: center;
+    justify-content: left;
+    backdrop-filter: blur(10px); /* Glass effect */
+}
+
+.sidebar-logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.sidebar-logo h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.sidebar-logo i {
+    margin-right: 10px;
+}
+
+.nav-links {
+    list-style-type: none;
+    width: 100%;
+}
+
+.nav-links li {
+    width: 100%;
+}
+
+.nav-links a {
+    text-decoration: none;
+    display: block;
+    padding: 15px 20px;
+    color:rgb(0, 0, 0);
+    margin: 10px 0;
+    background: rgba(216, 234, 248, 0.884); 
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a i {
+    margin-right: 12px;
+}
+
+.nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Brighter hover effect */
+}
