@@ -16,7 +16,15 @@ namespace SalesAPI.Controllers
 
             return customers;
         }
-        
+
+        [HttpGet("customerById")]
+        public async Task<ActionResult<Customer>> GetCustomerById([FromQuery] Guid guid)
+        {           
+            var customer = await _context.Customers.Where(c=>c.Id == guid).Include(c => c.AppUser).FirstOrDefaultAsync();
+
+            return customer;
+        }
+
         [HttpGet("customersByAppUserId")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers([FromQuery] string appUserId)
         {
@@ -52,6 +60,29 @@ namespace SalesAPI.Controllers
             };
 
             _context.Add(customer);
+            
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("updatecustomer")]
+        public async Task<ActionResult<CustomerDto>> UpdateCustomer(CustomerDto customerDto,[FromQuery] Guid guid)
+        {
+            
+            if(customerDto.AppUser == null) return Unauthorized("Invalid AppUser"); 
+            
+            var user = await _context.Users.FirstOrDefaultAsync(x=>x.UserName==customerDto.AppUser.UserName);
+
+            if(user == null) return Unauthorized("User not found");
+
+            var customer = await _context.Customers.Where(c=>c.Id.ToString().ToUpper()==guid.ToString().ToUpper()).FirstOrDefaultAsync();
+
+            if(customer == null) return BadRequest("Not valid customer");
+
+            var updatedCustomer = customerDto.GetCustomerFromDto(customer,customerDto);
+
+            _context.Update(updatedCustomer);
             
             await _context.SaveChangesAsync();
 

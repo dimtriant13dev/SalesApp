@@ -18,10 +18,26 @@ export class CustomerService {
       })
     );
   }
+
+  updateCustomer(model:any,id: string | null){
+    return this.http.post<Customer>(this.baseUrl +'customer/updatecustomer?guid='+id,model).pipe(
+      map(customer =>{
+        return customer;
+      })
+    );
+  }
   getCustomersByAppUserId(appUserId: string): Observable<Customer[]> {
     return this.http.get<Customer[]>(`${this.baseUrl}customer/customersByAppUserId?appUserId=${appUserId}`).pipe(
       map(customers => {
         return customers; // Map step is redundant here unless further transformations are needed
+      })
+    );
+  }
+
+  getCustomerById(id: string){
+    return this.http.get<Customer>(this.baseUrl+'customer/customerById?guid='+id).pipe(
+      map(customer => {
+        return customer; // Map step is redundant here unless further transformations are needed
       })
     );
   }

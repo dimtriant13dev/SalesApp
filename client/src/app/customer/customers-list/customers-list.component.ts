@@ -113,7 +113,18 @@ export class CustomersListComponent{
 
     this.selection.select(...this.dataSource.data);
   }
+  onCheckboxChange(event: any, row: any): void {
+    // Prevent the click event from propagating to other rows
 
+    const id = row.id;
+    // Toggle the selection state of the row
+    this.selection.toggle(row);
+
+    // Optionally, handle the selected IDs, e.g., store in an array
+    if (this.selection.isSelected(row)) {
+      this.router.navigate(['/customer/'+id+'']);
+    }
+  }
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: Customer): string {
     if (!row) {
