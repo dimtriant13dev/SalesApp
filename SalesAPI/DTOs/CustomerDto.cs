@@ -13,5 +13,19 @@ namespace SalesAPI.DTOs
         public DateTime CreatedAt {get;set;}
         public DateTime UpdatedAt {get;set;}
         public AppUser? AppUser {get;set;}
+
+        public Customer GetCustomerFromDto(Customer customer,CustomerDto customerDto)
+        {
+            if(customerDto != null)
+            {
+                customer.VatNumber = customerDto.VatNumber;
+                customer.PhoneNumber = customerDto.PhoneNumber;
+                customer.FirstName = customerDto.FirstName;
+                customer.LastName = customerDto.LastName;
+                customer.Title = customerDto.Title;
+            }
+
+            return customer;
+        }
     }
 }
